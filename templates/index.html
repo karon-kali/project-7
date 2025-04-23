@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Framework</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <button onclick="showScreen('flow')">Agent Flow Editor</button>
+        <button onclick="showScreen('manage')">Manage Agents</button>
+    </div>
+    <div class="main-container" id="main-container">
+        <h2>Welcome</h2>
+        <p>Select an option from the sidebar.</p>
+    </div>
+
+    <script>
+        function showScreen(screen) {
+            const container = document.getElementById('main-container');
+            if (screen === 'flow') {
+                container.innerHTML = `
+                    <h2>Agent Flow Editor</h2>
+                    <p>Build and visualize your agent workflows here.</p>
+                `;
+            } else if (screen === 'manage') {
+                container.innerHTML = `
+                    <h2>Manage Agents</h2>
+                    <p>Create, update, and monitor your agents.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Framework</title>
+    <link rel="stylesheet" href="/static/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>AI Agent Framework</h1>
+            <p>Build, manage, and deploy intelligent agents</p>
+        </div>
+        <button onclick="showScreen('flow')">
+            <span class="icon"><i class="fas fa-project-diagram"></i></span>
+            Agent Flow Editor
+        </button>
+        <button onclick="showScreen('manage')">
+            <span class="icon"><i class="fas fa-robot"></i></span>
+            Manage Agents
+        </button>
+        <button onclick="showScreen('analytics')">
+            <span class="icon"><i class="fas fa-chart-line"></i></span>
+            Analytics
+        </button>
+        <button onclick="showScreen('settings')">
+            <span class="icon"><i class="fas fa-cog"></i></span>
+            Settings
+        </button>
+    </div>
+    
+    <div class="main-container" id="main-container">
+        <div class="welcome-container">
+            <h2>Welcome to AI Agent Framework</h2>
+            <p>Build powerful AI agents and workflows to automate tasks and enhance productivity.</p>
+            <div class="welcome-actions">
+                <button class="btn btn-primary" onclick="showScreen('flow')">Create New Agent</button>
+                <button class="btn btn-secondary" onclick="showScreen('manage')">View Existing Agents</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screen) {
+            const container = document.getElementById('main-container');
+            
+            if (screen === 'flow') {
+                container.innerHTML = `
+                    <div class="page-header">
+                        <h2>Agent Flow Editor</h2>
+                        <p>Design and visualize your agent workflows with an intuitive drag-and-drop interface.</p>
+                    </div>
+                    <div class="card">
+                    <h3>Workflow Actions</h3>
+                    <button class="btn btn-primary" onclick="showAgentForm()">Create Agent</button>
+                    <button class="btn btn-secondary" onclick="deployAgent()">Deploy Agent</button>
+                    </div>
+                    <div class="card" id="agent-form-container" style="display: none;">
+                        <h3>Create New Agent</h3>
+                        <div class="form-group">
+                            <label for="agentPurpose">Agent Purpose:</label>
+                            <textarea id="agentPurpose" placeholder="Describe what this agent should do..." 
+                                style="width: 100%; padding: 10px; margin-top: 8px; border: 1px solid #ccc; border-radius: 6px; min-height: 100px;"></textarea>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="createAgent()">Submit</button>
+                            <button class="btn btn-secondary" onclick="hideAgentForm()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <p>Your workflow canvas will appear here. Add nodes and connections to create your agent logic.</p>
+                        <!-- Placeholder for flow editor canvas -->
+                        <div style="height: 400px; background-color: #f8f9fa; border: 1px dashed #ccc; 
+                            display: flex; align-items: center; justify-content: center; border-radius: 6px;">
+                            <p style="color: #7f8c8d;">Canvas Area - Flow Editor will load here</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Available Components</h3>
+                        <p>Drag these components onto the canvas to build your workflow:</p>
+                        <!-- Component buttons would go here -->
+                    </div>
+                `;
+            } 
+            else if (screen === 'manage') {
+                container.innerHTML = `
+                    <div class="page-header">
+                        <h2>Manage Agents</h2>
+                        <p>Create, update, and monitor your deployed agents.</p>
+                    </div>
+                    <div class="card">
+                        <h3>My Agents</h3>
+                        <p>You don't have any agents yet. Create one with the Agent Flow Editor.</p>
+                        <!-- Agent list would appear here -->
+                    </div>
+                    <div class="card">
+                        <h3>Agent Templates</h3>
+                        <p>Get started quickly with pre-built agent templates:</p>
+                        <!-- Template list would appear here -->
+                    </div>
+                `;
+            }
+            else if (screen === 'analytics') {
+                container.innerHTML = `
+                    <div class="page-header">
+                        <h2>Analytics Dashboard</h2>
+                        <p>Monitor performance and usage metrics for your agents.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Performance Overview</h3>
+                        <p>No data available yet. Deploy agents to start collecting analytics.</p>
+                        <!-- Charts would appear here -->
+                    </div>
+                `;
+            } else if (screen === 'settings') {
+                container.innerHTML = `
+                    <div class="page-header">
+                        <h2>Settings</h2>
+                        <p>Configure your framework preferences and integrations.</p>
+                    </div>
+                    <div class="card">
+                        <h3>General Settings</h3>
+                        <!-- Settings form would appear here -->
+                        <p>Framework settings will appear here.</p>
+                    </div>
+                    <div class="card">
+                        <h3>API Keys & Integrations</h3>
+                        <p>Connect your framework with external services.</p>
+                        <label for="apiKey">API Key:</label><br>
+                        <input type="text" id="apiKey" name="apiKey" placeholder="Enter your API key here"
+                        style="width: 100%; padding: 10px; margin-top: 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <button class="btn btn-primary" onclick="saveApiKey()">Save API Key</button>
+                    </div>
+                `;
+            }
+        }
+
+        function showAgentForm() {
+            document.getElementById('agent-form-container').style.display = 'block';
+        }
+
+        function hideAgentForm() {
+            document.getElementById('agent-form-container').style.display = 'none';
+        }
+
+        function createAgent() {
+            const purpose = document.getElementById('agentPurpose').value.trim();
+            if (!purpose) {
+                alert('Please enter a purpose for your agent');
+                return;
+            }
+            
+            // Disable the submit button and show loading state
+            const submitButton = document.querySelector('#agent-form-container .btn-primary');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating...';
+            
+            // Make API call to create the agent
+            fetch('/create_agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ purpose: purpose }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.agent_id) {
+                    alert('Agent created successfully with ID: ' + data.agent_id);
+                    // Store the created agent in localStorage for future use
+                    const agents = JSON.parse(localStorage.getItem('agents') || '[]');
+                    agents.push({
+                        id: data.agent_id,
+                        purpose: purpose,
+                        createdAt: new Date().toISOString()
+                    });
+                    localStorage.setItem('agents', JSON.stringify(agents));
+                } else {
+                    alert('Error creating agent: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error creating agent:', error);
+                alert('Error creating agent: ' + error.message);
+            })
+            .finally(() => {
+                // Reset the form and button
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+                hideAgentForm();
+                document.getElementById('agentPurpose').value = '';
+            });
+        }
+
+        function deployAgent() {
+            alert('Deploy agent functionality coming soon');
+        }
+        // Global variable to store the selected agent ID
+        let selectedAgentId = null;
+
+        function selectAgentForDeployment(agentId) {
+            selectedAgentId = agentId;
+            
+            // Find the agent details
+            const agents = JSON.parse(localStorage.getItem('agents') || '[]');
+            const agent = agents.find(a => a.id === agentId);
+            
+            if (agent) {
+                alert(`Agent selected for deployment: ${agent.purpose.substring(0, 50)}${agent.purpose.length > 50 ? '...' : ''}`);
+                
+                // Navigate to the flow editor screen where the deploy button is located
+                showScreen('flow');
+            } else {
+                alert('Error: Agent not found');
+            }
+        }
+    </script>
+</body>
+</html>
